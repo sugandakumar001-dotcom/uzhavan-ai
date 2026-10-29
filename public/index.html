@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#153f2d"><meta name="description" content="UZHAVAN AI smart irrigation and farm dashboard">
+<link rel="manifest" href="/manifest.webmanifest">
+<title>UZHAVAN AI — Smart Farming</title>
+<style>
+:root{--green:#174b35;--green2:#2d8055;--lime:#c9ef75;--cream:#f5f7ef;--ink:#183328;--muted:#728176;--line:#e1e8dc;--red:#b43e34;--amber:#9a6812}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:700;background:var(--green);color:white}button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:#e8efe4;color:var(--green)}.danger{background:#a7372d}.wrap{max-width:1240px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;background:var(--lime);border-radius:15px;display:grid;place-items:center;font-size:25px}.brand h1{font-size:21px;margin:0;letter-spacing:.2px}.brand p{margin:0;color:var(--muted);font-size:12px}.pill{background:#e4eedf;padding:6px 10px;border-radius:99px;font-size:12px;font-weight:800}.hero{background:var(--green);color:white;border-radius:24px;padding:27px;margin:22px 0;display:grid;grid-template-columns:1.5fr 1fr;gap:20px;overflow:hidden}.hero h2{font-size:clamp(26px,4vw,40px);line-height:1.08;margin:12px 0}.hero p{color:#d8e6da;max-width:580px}.hero .sun{font-size:90px;align-self:center;justify-self:center}.eyebrow{text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:900;color:var(--lime)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}.card h3{margin:0 0 12px;font-size:15px}.metric{font-size:31px;font-weight:850;letter-spacing:-1px}.unit{font-size:13px;color:var(--muted);font-weight:600}.muted{color:var(--muted)}.small{font-size:12px}.section{margin:24px 0 12px;display:flex;align-items:end;justify-content:space-between;gap:10px;flex-wrap:wrap}.section h2{margin:0;font-size:21px}.wide{grid-column:span 2}.third{grid-column:span 1}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:6px;margin:9px 0}.field label{font-size:12px;color:var(--muted);font-weight:800}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:11px;background:#fbfcf8;color:var(--ink);width:100%}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.alert{border-radius:12px;padding:11px 13px;background:#fff4da;color:#6f4a06;margin:8px 0;font-size:13px}.alert.critical{background:#ffe6e3;color:#8e2c23}.alert.good{background:#e4f4e7;color:#1c6238}.bar{height:8px;background:#edf1e9;border-radius:99px;overflow:hidden;margin:8px 0}.bar span{height:100%;display:block;background:var(--green2);border-radius:99px}.chart{height:150px;width:100%;display:flex;align-items:end;gap:5px;border-bottom:1px solid var(--line);padding-top:14px}.chart div{flex:1;min-width:3px;background:#9ecb8b;border-radius:5px 5px 0 0;position:relative}.chart div:hover{background:var(--green2)}.table{width:100%;border-collapse:collapse;font-size:12px}.table td,.table th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}.table th{color:var(--muted)}.chatlog{height:210px;overflow:auto;background:#f8faf5;border-radius:12px;padding:10px}.bubble{padding:9px 11px;border-radius:12px;margin:7px 0;max-width:95%;white-space:pre-wrap}.bubble.user{background:#dfeeda;margin-left:auto}.bubble.bot{background:white;border:1px solid var(--line)}.footer{padding:28px 0;color:var(--muted);font-size:12px;text-align:center}.hidden{display:none!important}.auth{max-width:450px;margin:8vh auto}.statusdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4a52d;margin-right:6px}.statusdot.on{background:#35a85c}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav button{font-size:12px;padding:8px 10px}.toast{position:fixed;bottom:20px;right:20px;background:#172d22;color:white;padding:13px 17px;border-radius:12px;box-shadow:0 8px 30px #0002;z-index:10;max-width:90vw}.tag{display:inline-block;font-size:11px;background:#edf2e9;border-radius:6px;padding:3px 7px;margin:2px}.dangertext{color:var(--red)}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.hero .sun{display:none}}@media(max-width:580px){.wrap{padding:12px}.grid,.two{grid-template-columns:1fr}.wide{grid-column:span 1}.formrow{grid-template-columns:1fr}.metric{font-size:27px}.hero{padding:21px}.top .nav{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">🌱</div><div><h1>UZHAVAN AI</h1><p>Manual-input smart farming. No ESP32 or sensors required.</p></div></div>
+ <div class="nav"><span class="pill" id="connection"><span class="statusdot"></span>Connecting…</span><button class="secondary hidden" id="voiceBtn">🎙 Tamil voice</button><button class="secondary hidden" id="logoutBtn">Sign out</button></div>
+</header>
+<section id="authPanel" class="auth card">
+ <div class="eyebrow" style="color:var(--green2)">YOUR DIGITAL FARM ASSISTANT</div><h2 id="authTitle">Welcome to your farm</h2><p class="muted">Create an account to save readings, irrigation plans and farm settings.</p>
+ <div id="nameField" class="field hidden"><label>YOUR NAME</label><input id="name" autocomplete="name" placeholder="Farmer name"></div>
+ <div class="field"><label>EMAIL</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+ <div class="field"><label>PASSWORD (10+ CHARACTERS)</label><input id="password" type="password" autocomplete="current-password" placeholder="At least 10 characters"></div>
+ <div class="actions"><button id="authSubmit">Sign in</button><button id="toggleAuth" class="secondary">Create account</button></div><p id="authMsg" class="small muted"></p>
+</section>
+<main id="appPanel" class="hidden">
+ <section class="hero"><div><div class="eyebrow">YOUR FARM · LIVE OVERVIEW</div><h2>Grow more with<br>every drop.</h2><p>Enter soil, water, weather and pump readings directly on this website. Every dashboard, alert and irrigation recommendation updates from the values you provide.</p><div class="actions"><button id="recommendBtn" style="background:var(--lime);color:var(--green)">✦ Get irrigation plan</button><button id="refreshBtn" class="secondary">↻ Refresh readings</button></div></div><div class="sun">🌾💧</div></section>
+
+ <div class="section"><h2>Enter farm details</h2><span class="small muted">All results are calculated from your own inputs — no sensors needed</span></div>
+ <section class="card">
+  <form id="farmAnalysisForm">
+   <div class="formrow">
+    <div class="field"><label>CROP</label><select id="aCrop" required><option>Rice</option><option selected>Tomato</option><option>Cotton</option><option>Maize</option><option>Groundnut</option><option>Sugarcane</option><option>Chilli</option><option>Banana</option><option>Other</option></select></div>
+    <div class="field"><label>FIELD AREA (ACRES)</label><input id="aArea" type="number" min="0.01" step="0.01" value="1" required></div>
+   </div>
+   <div class="formrow">
+    <div class="field"><label>SOIL MOISTURE (%)</label><input id="aSoil" type="number" min="0" max="100" value="30" required></div>
+    <div class="field"><label>TEMPERATURE (°C)</label><input id="aTemp" type="number" min="-20" max="80" step="0.1" value="30" required></div>
+   </div>
+   <div class="formrow">
+    <div class="field"><label>HUMIDITY (%)</label><input id="aHumidity" type="number" min="0" max="100" value="55" required></div>
+    <div class="field"><label>RAIN PROBABILITY (%)</label><input id="aRain" type="number" min="0" max="100" value="20" required><span class="small muted">Enter from your local forecast; weather lookup is shown separately.</span></div>
+   </div>
+   <div class="formrow">
+    <div class="field"><label>WATER AVAILABLE (LITRES)</label><input id="aWater" type="number" min="0" value="1500" required></div>
+    <div class="field"><label>MINIMUM WATER RESERVE (LITRES)</label><input id="aMinWater" type="number" min="0" value="100" required></div>
+   </div>
+   <div class="formrow">
+    <div class="field"><label>IRRIGATION DURATION (MINUTES)</label><input id="aDuration" type="number" min="0" value="10" required></div>
+    <div class="field"><label>FLOW RATE (L/MIN)</label><input id="aFlow" type="number" min="0" step="0.1" value="5" required></div>
+   </div>
+   <div class="formrow">
+    <div class="field"><label>OBSERVED PUMP STATUS</label><select id="aPump"><option value="false" selected>OFF</option><option value="true">ON</option></select></div>
+    <div class="field"><label>WATER USED (LITRES, OPTIONAL)</label><input id="aUsed" type="number" min="0" placeholder="Auto-estimate from flow × time"><span class="small muted">Leave blank to estimate using flow rate × duration.</span></div>
+   </div>
+   <div class="actions"><button type="submit">Analyze my farm inputs</button><button type="button" class="secondary" id="fillExample">Fill sample values</button></div>
+  </form>
+ </section>
+ <div class="section"><h2>Results for your inputs</h2><span class="small muted">Updates after you select Analyze</span></div>
+ <section id="analysisResults" class="two">
+  <div class="card"><h3>🌿 Irrigation recommendation</h3><p class="muted">Enter your farm values above and analyze to see the result.</p></div>
+  <div class="card"><h3>💧 Water and risk analysis</h3><p class="muted">Your water balance, leak warnings and risk alerts will appear here.</p></div>
+ </section>
+
+ <div class="section"><h2>Field conditions</h2><span class="muted small" id="lastUpdated">Waiting for your first input</span></div>
+ <section class="grid">
+  <div class="card"><h3>🌱 Soil moisture</h3><div class="metric" id="soilMetric">—<span class="unit"> %</span></div><div class="bar"><span id="soilBar" style="width:0%"></span></div><div class="small muted" id="soilHint">Enter your soil moisture below</div></div>
+  <div class="card"><h3>🌡 Temperature</h3><div class="metric" id="tempMetric">—<span class="unit"> °C</span></div><div class="small muted" id="humidityHint">Humidity —</div></div>
+  <div class="card"><h3>🚰 Water tank</h3><div class="metric" id="tankMetric">—<span class="unit"> %</span></div><div class="bar"><span id="tankBar" style="width:0%"></span></div><div class="small muted" id="tankHint">Low-water interlock threshold: 15%</div></div>
+  <div class="card"><h3>💧 Water flow</h3><div class="metric" id="flowMetric">—<span class="unit"> L/min</span></div><div class="small muted" id="pumpHint">Pump state unknown</div></div>
+ </section>
+ <div class="section"><h2>Alerts & protection</h2><span class="small muted">Based on the values you enter</span></div><section class="card" id="alerts"><p class="muted">Enter your first farm reading below.</p></section>
+ <div class="section"><h2>Smart irrigation</h2><span class="small muted">Crop rules + weather + optional AI explanation</span></div>
+ <section class="two">
+  <div class="card"><h3>🌿 Field settings</h3><div class="field"><label>FIELD NAME</label><input id="fieldName" value="My Farm"></div><div class="formrow"><div class="field"><label>CROP</label><select id="crop"><option>Rice</option><option>Tomato</option><option>Cotton</option><option>Maize</option><option>Groundnut</option><option>Sugarcane</option><option>Chilli</option><option>Banana</option><option>Other</option></select></div><div class="field"><label>AREA (ACRES)</label><input id="area" type="number" min=".01" step=".01" value="1"></div></div><div class="formrow"><div class="field"><label>SOIL MOISTURE MIN (%)</label><input id="minMoisture" type="number" min="5" max="90" value="35"></div><div class="field"><label>SOIL MOISTURE MAX (%)</label><input id="maxMoisture" type="number" min="6" max="100" value="65"></div></div><div class="field"><label>IRRIGATION MODE</label><select id="mode"><option value="manual">Manual only</option><option value="recommend">Recommendation + farmer approval</option><option value="automatic">Automatic (requires tested hardware safety)</option></select></div><button id="saveSettings">Save field settings</button><p class="small muted">Crop thresholds are starting guidance, not a substitute for local agronomy and sensor calibration.</p></div>
+  <div class="card"><h3>🧠 Irrigation recommendation</h3><div id="planOutput"><p class="muted">Enter your farm details in the form above, then analyze them. No sensor connection is required.</p></div><div class="actions"><button id="recommendBtn2">Calculate plan</button></div><div class="small muted" style="margin-top:12px">Recommendations do not start the pump. Live pump control requires a configured MQTT broker and tested independent hardware protections.</div></div>
+ </section>
+ <div class="section"><h2>Weather-aware planning</h2><span class="small muted">Forecast for configured field coordinates</span></div>
+ <section class="card"><div id="weatherOutput" class="muted">Weather will load after sign-in.</div><button class="secondary" id="weatherBtn" style="margin-top:10px">Refresh weather</button><p class="small muted">Set FIELD_LAT and FIELD_LON in .env to your field location.</p></section>
+ <div class="section"><h2>Water use & sensor history</h2><span class="small muted">Saved on this server</span></div>
+ <section class="two"><div class="card"><h3>Soil moisture trend</h3><div id="chart" class="chart"></div><div class="small muted">Most recent recorded readings (newest at right)</div></div><div class="card"><h3>Water ledger</h3><div class="metric" id="waterTotal">0<span class="unit"> L estimated</span></div><p class="muted small">Estimate from flow sensor while pump reports ON. Calibrate report interval and flow meter for accurate totals.</p><hr style="border:0;border-top:1px solid var(--line)"><div class="metric" id="readingsCount">0</div><div class="small muted">Saved sensor readings (recent history retained)</div></div></section>
+ <div class="section"><h2>Device setup & manual reading</h2><span class="small muted">Enter your farm observations directly</span></div>
+ <section class="two">
+  <div class="card"><h3>📝 Enter your farm readings</h3><form id="readingForm"><div class="formrow"><div class="field"><label>SOIL MOISTURE (%)</label><input required type="number" min="0" max="100" id="rSoil"></div><div class="field"><label>TEMPERATURE (°C)</label><input required type="number" min="-20" max="80" id="rTemp"></div></div><div class="formrow"><div class="field"><label>HUMIDITY (%)</label><input required type="number" min="0" max="100" id="rHumidity"></div><div class="field"><label>TANK LEVEL (%)</label><input required type="number" min="0" max="100" id="rTank"></div></div><div class="formrow"><div class="field"><label>FLOW (L/MIN)</label><input required type="number" min="0" max="1000" step=".1" id="rFlow"></div><div class="field"><label>PUMP STATUS</label><select id="rPump"><option value="false">OFF</option><option value="true">ON</option></select></div></div><button type="submit">Save farmer-entered reading</button></form><p class="small muted">These are your manually entered values. The dashboard, water alerts, history and crop-based plan use these saved inputs.</p></div>
+  <div class="card"><h3>🧭 Web-only farm control</h3><p>Use the form to record whether your pump is ON or OFF, the tank level, soil moisture and water flow. The website evaluates those values and updates alerts and recommendations.</p><div class="alert">This website does not operate a physical pump. “Pump ON/OFF” is a status you enter for monitoring and leak-detection logic.</div><p><strong>No ESP32, sensor connection, MQTT broker or wiring is required.</strong></p><p class="small muted">For leak detection, enter the observed flow rate and pump status accurately. The website can flag suspicious combinations, but it cannot physically shut off water.</p></div>
+ </section>
+ <div class="section"><h2>UZHAVAN AI assistant</h2><span class="small muted">English + Tamil · optional OpenAI API key</span></div>
+ <section class="card"><div class="chatlog" id="chatlog"><div class="bubble bot">Vanakkam! Ask about irrigation, crop care or your recorded sensor data. வணக்கம்! உங்கள் விவசாயக் கேள்விகளை கேளுங்கள்.</div></div><form id="chatForm" class="formrow" style="align-items:end;margin-top:10px"><div class="field" style="margin:0"><label>YOUR QUESTION / உங்கள் கேள்வி</label><input id="chatInput" placeholder="When should I water my tomato crop? / தண்ணீர் எப்போது பாய்ச்சலாம்?" maxlength="1500"></div><button type="submit">Ask assistant</button></form><div class="actions"><button class="secondary" id="speakBtn">🔊 Read last answer</button><button class="secondary" id="listenBtn">🎙 Speak question</button></div><p class="small muted">Voice recognition depends on browser support and may require internet. Offline mode queues your manually entered readings locally until connectivity returns. Weather and AI need internet access.</p></section>
+ <div class="section"><h2>Recent readings</h2><span class="small muted">Latest 10</span></div><section class="card" style="overflow:auto"><table class="table"><thead><tr><th>Time</th><th>Soil %</th><th>Temp °C</th><th>Tank %</th><th>Flow L/min</th><th>Pump</th><th>Source</th></tr></thead><tbody id="readingsTable"><tr><td colspan="7">No readings yet.</td></tr></tbody></table></section>
+</main>
+<footer class="footer">UZHAVAN AI · Field data stays in your app's local server database. Live control must be validated against real hardware before use.</footer>
+</div>
+<div id="toast" class="toast hidden"></div>
+<script>
+const $=id=>document.getElementById(id);let token=localStorage.getItem("uzhavan_token");let registering=false;let lastReply="";let cachedDashboard=null;
+function toast(msg){$("toast").textContent=msg;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),4000)}
+async function api(path,opts={}){const headers={"Content-Type":"application/json",...(opts.headers||{})};if(token)headers.Authorization="Bearer "+token;let r;try{r=await fetch(path,{...opts,headers});}catch(e){throw new Error("Network unavailable. Offline entries will be queued where supported.")}let d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Request failed");return d}
+function showAuth(){ $("authPanel").classList.remove("hidden");$("appPanel").classList.add("hidden");$("logoutBtn").classList.add("hidden");$("voiceBtn").classList.add("hidden");}
+function showApp(){ $("authPanel").classList.add("hidden");$("appPanel").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");$("voiceBtn").classList.remove("hidden");loadDashboard();loadWeather();flushQueue();}
+$("toggleAuth").onclick=()=>{registering=!registering;$("authTitle").textContent=registering?"Create your farmer account":"Welcome to your farm";$("authSubmit").textContent=registering?"Create account":"Sign in";$("toggleAuth").textContent=registering?"I already have an account":"Create account";$("nameField").classList.toggle("hidden",!registering);$("password").autocomplete=registering?"new-password":"current-password";$("authMsg").textContent=registering?"Use a password with at least 10 characters.":""};
+$("authSubmit").onclick=async()=>{try{$("authMsg").textContent="";const body={email:$("email").value,password:$("password").value};if(registering)body.name=$("name").value;const d=await api(registering?"/api/auth/register":"/api/auth/login",{method:"POST",body:JSON.stringify(body)});token=d.token;localStorage.setItem("uzhavan_token",token);showApp();}catch(e){$("authMsg").textContent=e.message}};
+$("logoutBtn").onclick=()=>{token=null;localStorage.removeItem("uzhavan_token");showAuth()};
+function val(v,unit=""){return v===undefined||v===null||Number.isNaN(Number(v))?"—":`${Number(v).toFixed(1)}${unit}`}
+function renderDashboard(d){cachedDashboard=d;const s=d.settings, r=d.latest;$("connection").innerHTML=`<span class="statusdot ${d.deviceOnline?"on":""}"></span>${d.deviceOnline?"Device online":"Device not reporting"}`;$("fieldName").value=s.fieldName||"My Farm";$("crop").value=s.crop||"Tomato";$("area").value=s.fieldArea||1;$("minMoisture").value=s.soilMoistureMin;$("maxMoisture").value=s.soilMoistureMax;$("mode").value=s.irrigationMode||"recommend";$("lastUpdated").textContent=r?"Last reading "+new Date(r.at).toLocaleString():"No readings received yet";
+$("soilMetric").innerHTML=r?val(r.soilMoisture)+'<span class="unit"> %</span>':'—<span class="unit"> %</span>';$("soilBar").style.width=(r?Math.max(0,Math.min(100,r.soilMoisture)):0)+"%";$("soilHint").textContent=r?(r.soilMoisture<s.soilMoistureMin?"Below configured minimum":r.soilMoisture>s.soilMoistureMax?"Above configured maximum":"Within configured range"):"Waiting for your first input";
+$("tempMetric").innerHTML=r?val(r.temperatureC)+'<span class="unit"> °C</span>':'—<span class="unit"> °C</span>';$("humidityHint").textContent="Humidity "+(r?val(r.humidityPercent,"%"):"—");$("tankMetric").innerHTML=r?val(r.tankPercent)+'<span class="unit"> %</span>':'—<span class="unit"> %</span>';$("tankBar").style.width=(r?Math.max(0,Math.min(100,r.tankPercent)):0)+"%";$("tankHint").textContent=r&&r.tankPercent<=15?"LOW WATER — pump start blocked":"Low-water software threshold: 15%";$("flowMetric").innerHTML=r?val(r.flowRateLpm)+'<span class="unit"> L/min</span>':'—<span class="unit"> L/min</span>';$("pumpHint").textContent=r?`Pump ${r.pumpRunning?"ON":"OFF"} · ${r.source}`:"Pump state unknown";
+$("alerts").innerHTML=d.alerts.length?d.alerts.map(a=>`<div class="alert ${a.severity==="critical"?"critical":""}">${a.severity==="critical"?"⚠":"ℹ"} ${esc(a.message)}</div>`):'<div class="alert good">✓ No rule-based alerts from the latest reading.</div>';
+$("waterTotal").innerHTML=val(s.totalWaterLitres||0)+'<span class="unit"> L estimated</span>';$("readingsCount").textContent=d.readings.length;$("chart").innerHTML="";const hist=[...d.readings].reverse().slice(-24);hist.forEach(x=>{let el=document.createElement("div");el.style.height=Math.max(4,Math.min(100,x.soilMoisture))+"%";el.title=`${new Date(x.at).toLocaleString()}: ${x.soilMoisture}%`; $("chart").appendChild(el)});$("readingsTable").innerHTML=d.readings.slice(0,10).map(x=>`<tr><td>${new Date(x.at).toLocaleString()}</td><td>${val(x.soilMoisture)}</td><td>${val(x.temperatureC)}</td><td>${val(x.tankPercent)}</td><td>${val(x.flowRateLpm)}</td><td>${x.pumpRunning?"ON":"OFF"}</td><td>${esc(x.source)}</td></tr>`).join("")||'<tr><td colspan="7">No readings yet.</td></tr>'}
+function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function loadDashboard(){try{renderDashboard(await api("/api/dashboard"))}catch(e){if(e.message.includes("Sign in"))showAuth();else toast(e.message)}}
+
+$("fillExample").onclick=()=>{ $("aCrop").value="Tomato";$("aArea").value=1;$("aSoil").value=28;$("aTemp").value=32;$("aHumidity").value=45;$("aRain").value=15;$("aWater").value=1500;$("aMinWater").value=100;$("aDuration").value=10;$("aFlow").value=5;$("aPump").value="false";$("aUsed").value=""; };
+$("farmAnalysisForm").onsubmit=async e=>{
+ e.preventDefault();
+ const used=$("aUsed").value;
+ const body={crop:$("aCrop").value,fieldAreaAcres:Number($("aArea").value),soilMoisture:Number($("aSoil").value),temperatureC:Number($("aTemp").value),humidityPercent:Number($("aHumidity").value),rainProbabilityPercent:Number($("aRain").value),waterAvailableLitres:Number($("aWater").value),minimumWaterLitres:Number($("aMinWater").value),irrigationDurationMinutes:Number($("aDuration").value),flowRateLpm:Number($("aFlow").value),pumpRunning:$("aPump").value==="true",waterUsedLitres:used===""?undefined:Number(used)};
+ $("analysisResults").innerHTML='<div class="card"><p>Analyzing your entered values…</p></div>';
+ try {
+  const d=await api("/api/farm/analyze",{method:"POST",body:JSON.stringify(body)});
+  const alerts=d.alerts.length?d.alerts.map(a=>`<div class="alert ${a.severity==="critical"?"critical":""}"><strong>${esc(a.title)}</strong><br>${esc(a.detail)}</div>`).join(""):'<div class="alert good">No rule-based risk flags for the values you entered.</div>';
+  $("analysisResults").innerHTML=`
+   <div class="card"><h3>🌿 Irrigation recommendation</h3><div class="pill">${esc(d.irrigation.decision)}</div><h2 style="font-size:28px">${d.irrigation.suggestedDurationMinutes?d.irrigation.suggestedDurationMinutes+" minutes suggested":"0 minutes suggested"}</h2><p>${esc(d.irrigation.reason)}</p><p class="small muted">${esc(d.irrigation.cropGuidance)}</p><hr style="border:0;border-top:1px solid var(--line)"><h3>Weather effect</h3><p>${esc(d.weather.effect)}</p><p class="small muted">Rule-based guidance is approximate and does not operate a pump.</p></div>
+   <div class="card"><h3>💧 Water and risk analysis</h3><div class="metric">${Number(d.water.estimatedUsedLitres).toFixed(1)}<span class="unit"> L used/estimated</span></div><p>Available: <strong>${Number(d.water.availableLitres).toFixed(1)} L</strong></p><p>Estimated remaining: <strong>${Number(d.water.estimatedRemainingLitres).toFixed(1)} L</strong></p><p>Share of available water used: <strong>${d.water.percentageOfAvailabilityUsed===null?"Not calculable":d.water.percentageOfAvailabilityUsed+"%"}</strong></p>${alerts}</div>
+   <div class="card wide"><h3>🧠 UZHAVAN AI analysis</h3><p style="white-space:pre-wrap">${esc(d.aiExplanation||d.summary)}</p><p class="small muted">Generated ${new Date(d.generatedAt).toLocaleString()}. Results use your entered values. Weather probability is user-entered for this analysis.</p></div>`;
+  $("planOutput").innerHTML=`<div class="pill">${esc(d.irrigation.decision)}</div><h2 style="font-size:25px">${Number(d.irrigation.suggestedDurationMinutes)||0} min suggested</h2><p>${esc(d.irrigation.reason)}</p><p class="small muted">${esc(d.irrigation.cropGuidance)}</p><div class="alert">${esc(d.weather.effect)}</div>${alerts}<p class="small muted">Manual-input recommendation only; no pump is controlled.</p>`;
+  toast("Farm analysis complete");
+  loadDashboard();
+ } catch(err) {$("analysisResults").innerHTML=`<div class="card wide"><div class="alert">${esc(err.message)}</div></div>`; $("planOutput").innerHTML=`<div class="alert">${esc(err.message)}</div>`;}
+};
+
+$("refreshBtn").onclick=loadDashboard;
+$("saveSettings").onclick=async()=>{try{await api("/api/settings",{method:"PATCH",body:JSON.stringify({fieldName:$("fieldName").value,crop:$("crop").value,fieldArea:Number($("area").value),soilMoistureMin:Number($("minMoisture").value),soilMoistureMax:Number($("maxMoisture").value),irrigationMode:$("mode").value})});toast("Field settings saved");loadDashboard()}catch(e){toast(e.message)}};
+async function recommend(){
+  // The primary plan button must use the values entered in the web form, not require a sensor reading.
+  if ($("farmAnalysisForm").reportValidity()) {
+    $("farmAnalysisForm").requestSubmit();
+    $("analysisResults").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+}
+$("recommendBtn").onclick=recommend;$("recommendBtn2").onclick=recommend;
+async function loadWeather(){try{const d=await api("/api/weather");const c=d.current;const rain=d.rainProbabilityNextHours.length?Math.max(...d.rainProbabilityNextHours):null;$("weatherOutput").innerHTML=`<div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div><div class="small muted">Temperature</div><strong>${val(c.temperature_2m," °C")}</strong></div><div><div class="small muted">Humidity</div><strong>${val(c.relative_humidity_2m,"%")}</strong></div><div><div class="small muted">Rain probability peak</div><strong>${rain===null?"—":rain+"%"}</strong></div></div><p class="small muted">Precipitation now: ${val(c.precipitation," mm")} · Wind: ${val(c.wind_speed_10m," km/h")} · Updated ${esc(c.time)}</p>`}catch(e){$("weatherOutput").textContent=e.message}}
+$("weatherBtn").onclick=loadWeather;
+$("readingForm").onsubmit=async e=>{e.preventDefault();const body={soilMoisture:Number($("rSoil").value),temperatureC:Number($("rTemp").value),humidityPercent:Number($("rHumidity").value),tankPercent:Number($("rTank").value),flowRateLpm:Number($("rFlow").value),pumpRunning:$("rPump").value==="true"};try{await api("/api/readings/manual",{method:"POST",body:JSON.stringify(body)});toast("Farmer-entered reading saved");loadDashboard()}catch(err){if(!navigator.onLine){const q=JSON.parse(localStorage.getItem("uzhavan_queue")||"[]");q.push(body);localStorage.setItem("uzhavan_queue",JSON.stringify(q));toast("Offline: reading queued on this device")}else toast(err.message)}};
+async function flushQueue(){if(!token||!navigator.onLine)return;const q=JSON.parse(localStorage.getItem("uzhavan_queue")||"[]");if(!q.length)return;const left=[];for(const item of q){try{await api("/api/readings/manual",{method:"POST",body:JSON.stringify(item)})}catch{left.push(item)}}localStorage.setItem("uzhavan_queue",JSON.stringify(left));if(q.length!==left.length){toast(`${q.length-left.length} offline reading(s) synced`);loadDashboard()}}
+window.addEventListener("online",flushQueue);
+async function sendChat(message){addBubble(message,"user");$("chatInput").value="";try{const d=await api("/api/chat",{method:"POST",body:JSON.stringify({message})});lastReply=d.reply;addBubble(d.reply,"bot");}catch(e){addBubble(e.message,"bot")}}
+function addBubble(t,who){const el=document.createElement("div");el.className="bubble "+who;el.textContent=t;$("chatlog").appendChild(el);$("chatlog").scrollTop=$("chatlog").scrollHeight}
+$("chatForm").onsubmit=e=>{e.preventDefault();if($("chatInput").value.trim())sendChat($("chatInput").value.trim())};
+$("speakBtn").onclick=()=>{if(!("speechSynthesis"in window))return toast("Speech output not supported in this browser");const u=new SpeechSynthesisUtterance(lastReply||"வணக்கம். உங்கள் விவசாய உதவியாளர் தயார்.");u.lang=/[\u0B80-\u0BFF]/.test(u.text)?"ta-IN":"en-IN";speechSynthesis.speak(u)};
+let activeRecognition=null;
+function listen(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR)return toast("Speech input is not supported by this browser. You can type a question; Read last answer can still speak replies.");
+ if(activeRecognition){try{activeRecognition.abort()}catch{} activeRecognition=null;}
+ const rec=new SR();activeRecognition=rec;rec.lang="ta-IN";rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
+ rec.onresult=e=>{const text=e.results?.[0]?.[0]?.transcript;if(text){$("chatInput").value=text;sendChat(text)}};
+ rec.onerror=e=>{if(e.error==="aborted"||e.error==="no-speech")return;const advice=e.error==="not-allowed"||e.error==="service-not-allowed"?"Allow microphone access in Chrome site settings and macOS Privacy & Security → Microphone.":e.error==="audio-capture"?"No microphone was available. Check your Mac input device.":"Try typing your question or use Chrome with microphone permission.";toast("Voice recognition: "+e.error+". "+advice)};
+ rec.onend=()=>{if(activeRecognition===rec)activeRecognition=null};
+ try{rec.start();toast("Listening in Tamil… speak now.")}catch(e){activeRecognition=null;toast("Could not start voice recognition. Check microphone permission and try again.")}
+}
+$("listenBtn").onclick=listen;$("voiceBtn").onclick=listen;
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));
+(async()=>{try{await fetch("/api/health");if(token){try{await api("/api/me");showApp()}catch{showAuth()}}else showAuth()}catch{showAuth()}})();
+setInterval(()=>{if(token&&navigator.onLine)loadDashboard()},20000);
+</script>
+</body></html>
