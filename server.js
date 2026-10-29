@@ -22,7 +22,12 @@ const secret = JWT_SECRET || "development-only-secret-change-this-32chars";
 const DATA_DIR = path.join(__dirname, "data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 const DEVICE_ID = process.env.MQTT_DEVICE_ID || "field-01";
-const client = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+const client = process.env.GEMINI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    })
+  : null;
 
 const defaultState = () => ({
   users: [], readings: [], events: [], settings: {
@@ -328,17 +333,17 @@ app.post("/api/chat", auth, async (req, res) => {
   const manualAnalysis = db.lastFarmAnalyses?.[req.user.id] || null;
   if (client) {
     try {
-      const out = await client.chat.completions.create({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", temperature: 0.3, messages: [
+      const out = await client.chat.completions.create({ model: model: process.env.GEMINI_MODEL || "gemini-2.5-flash",, temperature: 0.3, messages: [
         { role: "system", content: `You are UZHAVAN AI, a cautious Tamil/English farming assistant. Answer in the user's language. Current saved crop setting: ${crop}. Latest manually entered reading: ${JSON.stringify(latest || "No separate reading form entry")}. Latest farm analysis submitted by this user: ${JSON.stringify(manualAnalysis || "No manual analysis submitted yet")}. Clearly distinguish manually entered estimates from sensor measurements. Never pretend sensor data exists. Do not claim to have operated hardware. For chemical/pesticide advice, encourage following product label and local extension guidance.` },
         { role: "user", content: message }
       ]});
-      return res.json({ reply: out.choices[0]?.message?.content || "Could not create an answer.", provider: "OpenAI" });
+      return res.json({ reply: out.choices[0]?.message?.content || "Could not create an answer.", provider: "provider: "Gemini" });
     } catch {}
   }
   const analysisNote = manualAnalysis ? `Last manual analysis: ${manualAnalysis.summary} Water estimate: ${manualAnalysis.water.estimatedUsedLitres} L; available water entered: ${manualAnalysis.water.availableLitres} L.` : "No manual farm analysis has been submitted yet.";
   const reply = /தமிழ்|tamil|வணக்கம்|தண்ணீர்|பயிர்/i.test(message)
     ? `வணக்கம்! உங்கள் பயிர்: ${crop}. ${manualAnalysis ? `நீங்கள் உள்ளிட்ட கடைசி விவசாயத் தரவு: ${manualAnalysis.summary}` : latest ? `கடைசியாக உள்ளிட்ட மண் ஈரப்பதம் ${latest.soilMoisture}%, தொட்டி அளவு ${latest.tankPercent}%.` : "இன்னும் விவசாயத் தரவு உள்ளிடப்படவில்லை."} இது ஆலோசனை மட்டுமே; உள்ளூர் வேளாண் வழிகாட்டுதலைப் பின்பற்றவும்.`
-    : `I can provide a basic local answer, but OPENAI_API_KEY is not configured. Current crop setting: ${crop}. ${analysisNote} ${latest ? `Latest separately saved reading: soil ${latest.soilMoisture}%, tank ${latest.tankPercent}%.` : "No separate manual reading has been saved."} Add OPENAI_API_KEY for generative AI responses.`;
+    : `I can provide a basic local answer, "GEMINI_API_KEY is not configured. Results use rule-based calculations, not generative AI.". Current crop setting: ${crop}. ${analysisNote} ${latest ? `Latest separately saved reading: soil ${latest.soilMoisture}%, tank ${latest.tankPercent}%.` : "No separate manual reading has been saved."} Add .`;"GEMINI_API_KEY is not configured. Results use rule-based calculations, not generative AI."
   res.json({ reply, provider: "local-fallback" });
 });
 
